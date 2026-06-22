@@ -6,6 +6,7 @@ import { FavoriteButton } from '../components/ui/FavoriteButton';
 import { LegalNotice } from '../components/ui/LegalNotice';
 import { ErrorMessage } from '../components/ui/ErrorMessage';
 import { formatDate, truncate } from '../lib/utils';
+import { AiChat } from '../components/ui/AiChat';
 
 export function ExploreDetailPage() {
   const { type, id } = useParams<{ type: string; id: string }>();
@@ -98,6 +99,7 @@ export function ExploreDetailPage() {
       </div>
 
       <LegalNotice source="comic_vine" />
+      <AiChat context={`Комикс: ${isVolume ? vol.name : iss.name ?? ''}. Издатель: ${isVolume ? vol.publisher ?? '' : iss.volumeName}. ${truncate(item.deck || item.description, 300)}`} />
     </div>
   );
 }

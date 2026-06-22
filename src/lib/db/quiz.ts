@@ -47,3 +47,20 @@ export async function saveAttempt(userId: string, score: number, total: number):
     .insert({ user_id: userId, score, total });
   if (error) throw new Error(error.message);
 }
+
+export interface QuizAttempt {
+  id: string;
+  score: number;
+  total: number;
+  created_at: string;
+}
+
+export async function getUserAttempts(): Promise<QuizAttempt[]> {
+  const { data, error } = await supabase
+    .from('quiz_attempts')
+    .select('id, score, total, created_at')
+    .order('created_at', { ascending: false })
+    .limit(10);
+  if (error) throw new Error(error.message);
+  return data ?? [];
+}

@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { AuthModal } from './AuthModal';
@@ -45,7 +45,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     ⚙ Админ
                   </NavLink>
                 )}
-                <span className="user-email">{user.email}</span>
+                <Link to="/profile" className="user-email user-email--link">{user.email}</Link>
                 <button className="ghost" onClick={signOut}>Выйти</button>
               </>
             ) : (

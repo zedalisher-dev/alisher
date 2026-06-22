@@ -13,6 +13,7 @@ import { NewsPage } from './pages/NewsPage';
 import { NewsPostPage } from './pages/NewsPostPage';
 import { AdminPage } from './pages/AdminPage';
 import { QuizPage } from './pages/QuizPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/xkcd" element={<XkcdPage />} />
             <Route path="/xkcd/:num" element={<XkcdNumPage />} />
             <Route path="/library" element={<LibraryPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </AppShell>
       </AuthProvider>

@@ -8,6 +8,7 @@ import { LegalNotice } from '../components/ui/LegalNotice';
 import { ErrorMessage } from '../components/ui/ErrorMessage';
 import { recordHistory } from '../lib/db/history';
 import { truncate } from '../lib/utils';
+import { AiChat } from '../components/ui/AiChat';
 
 export function ReadItemPage() {
   const { identifier } = useParams<{ identifier: string }>();
@@ -101,6 +102,7 @@ export function ReadItemPage() {
       )}
 
       <LegalNotice source="archive" />
+      <AiChat context={`Комикс: ${item.title}. ${item.description ? item.description.slice(0, 300) : ''}`} />
     </div>
   );
 }
