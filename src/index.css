@@ -1723,6 +1723,71 @@ input:focus { outline: none; border-color: var(--soft); }
   gap: 6px;
 }
 
+.admin-review-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 180px));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.admin-review-summary > div,
+.admin-review-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.admin-review-summary > div {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-review-value {
+  color: var(--accent);
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.admin-review-label {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.admin-reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-review-card {
+  padding: 16px;
+}
+
+.admin-review-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.admin-review-rating {
+  color: var(--accent);
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.admin-review-comment {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
 .ghost.danger:hover {
   color: var(--error, #f87171);
 }
@@ -1736,6 +1801,8 @@ input:focus { outline: none; border-color: var(--soft); }
   .news-card-cover { width: 100%; height: 180px; }
   .news-card-body { padding: 16px; }
   .news-post-title { font-size: 22px; }
+  .admin-review-summary { grid-template-columns: 1fr 1fr; }
+  .admin-review-head { flex-direction: column; gap: 8px; }
 }
 
 /* ── Quiz ── */

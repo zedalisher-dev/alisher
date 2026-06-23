@@ -5,10 +5,11 @@ import { getNewsPosts, createNewsPost, updateNewsPost, deleteNewsPost } from '..
 import type { NewsPost } from '../lib/db/news';
 import { getQuizQuestions, createQuizQuestion, deleteQuizQuestion } from '../lib/db/quiz';
 import type { QuizQuestion } from '../lib/db/quiz';
+import { getAdminReviews, type AppReview } from '../lib/db/reviews';
 
 const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL as string;
 
-type AdminTab = 'news' | 'quiz';
+type AdminTab = 'news' | 'quiz' | 'reviews';
 
 function emptyForm() {
   return { title: '', body: '', cover_url: '' };
@@ -32,6 +33,8 @@ export function AdminPage() {
   const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
   const [quizForm, setQuizForm] = useState(emptyQuizForm());
   const [quizSaving, setQuizSaving] = useState(false);
+  const [reviews, setReviews] = useState<AppReview[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
 
   function loadPosts() {
     setLoading(true);
@@ -47,8 +50,16 @@ export function AdminPage() {
       .catch((e: Error) => setError(e.message));
   }
 
+  function loadReviews() {
+    setReviewsLoading(true);
+    getAdminReviews()
+      .then(setReviews)
+      .catch((e: Error) => setError(e.message))
+      .finally(() => setReviewsLoading(false));
+  }
+
   useEffect(() => {
-    if (isAdmin) { loadPosts(); loadQuiz(); }
+    if (isAdmin) { loadPosts(); loadQuiz(); loadReviews(); }
   }, [isAdmin]);
 
   if (!user) {
@@ -147,7 +158,47 @@ export function AdminPage() {
       <div className="filter-tabs" style={{ marginBottom: 28 }}>
         <button className={'filter-tab' + (adminTab === 'news' ? ' active' : '')} onClick={() => setAdminTab('news')}>📰 Новости</button>
         <button className={'filter-tab' + (adminTab === 'quiz' ? ' active' : '')} onClick={() => setAdminTab('quiz')}>🧠 Викторина</button>
+        <button className={'filter-tab' + (adminTab === 'reviews' ? ' active' : '')} onClick={() => setAdminTab('reviews')}>⭐ Отзывы</button>
       </div>
+
+      {adminTab === 'reviews' && (
+        <>
+          <div className="admin-review-summary">
+            <div>
+              <span className="admin-review-value">{reviews.length}</span>
+              <span className="admin-review-label">отзывов</span>
+            </div>
+            <div>
+              <span className="admin-review-value">
+                {reviews.length === 0 ? '—' : (reviews.reduce((sum, item) => sum + item.rating, 0) / reviews.length).toFixed(1)}
+              </span>
+              <span className="admin-review-label">средняя оценка</span>
+            </div>
+          </div>
+
+          <h2 className="admin-section-title">Отзывы пользователей</h2>
+          {error && <p className="admin-error">{error}</p>}
+          {reviewsLoading && <p className="empty">Загрузка…</p>}
+          {!reviewsLoading && reviews.length === 0 && (
+            <p className="empty">Отзывов пока нет или email админа ещё не добавлен в admin_users.</p>
+          )}
+
+          <div className="admin-reviews-list">
+            {reviews.map((review) => (
+              <div key={review.id} className="admin-review-card">
+                <div className="admin-review-head">
+                  <div>
+                    <p className="admin-post-title">{review.user_email ?? 'Пользователь'}</p>
+                    <p className="admin-post-date">{new Date(review.updated_at).toLocaleDateString('ru-RU')}</p>
+                  </div>
+                  <span className="admin-review-rating">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</span>
+                </div>
+                <p className="admin-review-comment">{review.comment || 'Без комментария'}</p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {adminTab === 'quiz' && (
         <>

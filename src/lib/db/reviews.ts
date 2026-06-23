@@ -3,6 +3,7 @@ import { supabase } from '../supabase';
 export interface AppReview {
   id: string;
   user_id: string;
+  user_email: string | null;
   rating: number;
   comment: string;
   created_at: string;
@@ -36,6 +37,7 @@ export async function saveMyReview(input: ReviewInput): Promise<AppReview> {
     .from('app_reviews')
     .upsert({
       user_id: user.id,
+      user_email: user.email ?? null,
       rating: input.rating,
       comment: input.comment.trim(),
       updated_at: new Date().toISOString(),
@@ -45,4 +47,14 @@ export async function saveMyReview(input: ReviewInput): Promise<AppReview> {
 
   if (error) throw error;
   return data;
+}
+
+export async function getAdminReviews(): Promise<AppReview[]> {
+  const { data, error } = await supabase
+    .from('app_reviews')
+    .select('*')
+    .order('updated_at', { ascending: false });
+
+  if (error) throw error;
+  return data ?? [];
 }
