@@ -1,43 +1,44 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const SOURCES = [
   {
     to: '/explore',
     icon: '🗃️',
     title: 'Comic Vine',
-    subtitle: 'Поиск метаданных',
-    desc: 'Персонажи, выпуски, серии и издатели из крупнейшей базы данных комиксов.',
+    subtitleKey: 'home.comicVine.subtitle',
+    descKey: 'home.comicVine.desc',
     badge: 'source-badge--comic-vine',
-    badgeLabel: 'Только метаданные',
+    badgeKey: 'home.comicVine.badge',
   },
   {
     to: '/read',
     icon: '📖',
-    title: 'Читалка',
-    subtitle: 'Публичный архив',
-    desc: 'Читай комиксы в открытом доступе из Internet Archive — PDF, изображения, текст.',
+    titleKey: 'home.reader.title',
+    subtitleKey: 'home.reader.subtitle',
+    descKey: 'home.reader.desc',
     badge: 'source-badge--archive',
-    badgeLabel: 'Публичный доступ',
+    badgeKey: 'home.reader.badge',
   },
   {
     to: '/xkcd',
     icon: '😄',
     title: 'xkcd',
-    subtitle: 'Демо-режим',
-    desc: 'Веб-комикс xkcd — научный юмор, математика и жизнь программиста.',
+    subtitleKey: 'home.xkcd.subtitle',
+    descKey: 'home.xkcd.desc',
     badge: 'source-badge--xkcd',
-    badgeLabel: 'Веб-комикс',
+    badgeKey: 'home.xkcd.badge',
   },
-];
+] as const;
 
 export function HomePage() {
+  const { t } = useLanguage();
+
   return (
     <div className="page-container">
       <section className="hero">
         <h1 className="hero-title">Comics Geek</h1>
-        <p className="hero-subtitle">
-          Ищи комиксы. Читай публичный архив. Смотри xkcd.
-        </p>
+        <p className="hero-subtitle">{t('home.subtitle')}</p>
       </section>
 
       <div className="hero-cards">
@@ -46,11 +47,11 @@ export function HomePage() {
             <div className="hero-card-icon">{s.icon}</div>
             <div className="hero-card-body">
               <div className="hero-card-header">
-                <h2 className="hero-card-title">{s.title}</h2>
-                <span className={`source-badge ${s.badge}`}>{s.badgeLabel}</span>
+                <h2 className="hero-card-title">{'titleKey' in s ? t(s.titleKey) : s.title}</h2>
+                <span className={`source-badge ${s.badge}`}>{t(s.badgeKey)}</span>
               </div>
-              <p className="hero-card-sub">{s.subtitle}</p>
-              <p className="hero-card-desc">{s.desc}</p>
+              <p className="hero-card-sub">{t(s.subtitleKey)}</p>
+              <p className="hero-card-desc">{t(s.descKey)}</p>
             </div>
           </Link>
         ))}
