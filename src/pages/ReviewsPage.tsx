@@ -6,6 +6,14 @@ import { getMyReview, saveMyReview, type AppReview } from '../lib/db/reviews';
 
 const RATINGS = [1, 2, 3, 4, 5];
 
+function isMissingReviewsTable(error: unknown) {
+  if (typeof error !== 'object' || error === null) return false;
+  const maybeError = error as { code?: unknown; message?: unknown };
+  const code = typeof maybeError.code === 'string' ? maybeError.code : '';
+  const message = typeof maybeError.message === 'string' ? maybeError.message : '';
+  return code === '42P01' || message.includes('app_reviews');
+}
+
 function formatDate(iso: string, language: string) {
   return new Date(iso).toLocaleDateString(language, {
     day: 'numeric',
@@ -39,7 +47,9 @@ export function ReviewsPage() {
           setComment(savedReview.comment);
         }
       })
-      .catch(() => setError(t('reviews.loadError')))
+      .catch((loadError: unknown) => {
+        setError(isMissingReviewsTable(loadError) ? t('reviews.dbSetupError') : t('reviews.loadError'));
+      })
       .finally(() => setLoading(false));
   }, [t, user]);
 
@@ -58,8 +68,8 @@ export function ReviewsPage() {
       const savedReview = await saveMyReview({ rating, comment });
       setReview(savedReview);
       setMessage(t('reviews.saveSuccess'));
-    } catch {
-      setError(t('reviews.saveError'));
+    } catch (saveError) {
+      setError(isMissingReviewsTable(saveError) ? t('reviews.dbSetupError') : t('reviews.saveError'));
     } finally {
       setSaving(false);
     }

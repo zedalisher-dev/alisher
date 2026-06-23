@@ -37,6 +37,7 @@ type TranslationKey =
   | 'reviews.loadError'
   | 'reviews.saveSuccess'
   | 'reviews.saveError'
+  | 'reviews.dbSetupError'
   | 'reviews.authTitle'
   | 'reviews.authText'
   | 'reviews.kicker'
@@ -89,6 +90,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'reviews.loadError': 'Не получилось загрузить отзыв. Попробуйте обновить страницу.',
     'reviews.saveSuccess': 'Спасибо! Отзыв сохранён.',
     'reviews.saveError': 'Не получилось сохранить отзыв. Попробуйте ещё раз.',
+    'reviews.dbSetupError': 'База для отзывов ещё не настроена. Нужно выполнить npm run db:login, затем npm run db:push.',
     'reviews.authTitle': 'Войдите, чтобы оставить отзыв',
     'reviews.authText': 'Оценка сохранится в вашем профиле.',
     'reviews.kicker': 'Обратная связь',
@@ -140,6 +142,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'reviews.loadError': 'Could not load your review. Try refreshing the page.',
     'reviews.saveSuccess': 'Thanks! Your review was saved.',
     'reviews.saveError': 'Could not save your review. Please try again.',
+    'reviews.dbSetupError': 'The reviews database is not ready yet. Run npm run db:login, then npm run db:push.',
     'reviews.authTitle': 'Sign in to leave a review',
     'reviews.authText': 'Your rating will be saved in your profile.',
     'reviews.kicker': 'Feedback',
@@ -191,6 +194,7 @@ const translations: Record<Language, Record<TranslationKey, string>> = {
     'reviews.loadError': 'Пікір жүктелмеді. Бетті жаңартып көріңіз.',
     'reviews.saveSuccess': 'Рақмет! Пікір сақталды.',
     'reviews.saveError': 'Пікір сақталмады. Қайта көріңіз.',
+    'reviews.dbSetupError': 'Пікірлер базасы әлі дайын емес. npm run db:login, кейін npm run db:push орындаңыз.',
     'reviews.authTitle': 'Пікір қалдыру үшін кіріңіз',
     'reviews.authText': 'Бағаңыз профильде сақталады.',
     'reviews.kicker': 'Кері байланыс',
